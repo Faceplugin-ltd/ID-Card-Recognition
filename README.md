@@ -11,6 +11,8 @@ This ID Card Recognition SDK offers advanced recognition capabilities for variou
 <br></br>
 
 <h2>Screenshots</h2>
+<img alt="" src="https://github.com/user-attachments/assets/94ff3050-a3b5-4896-b72e-5cb5a5396d5b" width=1600/>
+
 </div>
 
 <h2>List of our Products</h2>

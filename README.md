@@ -3,20 +3,19 @@
 </div>
 
 # ID Card Recognition SDK
-This ID Card Recognition SDK offers advanced recognition capabilities for various ID documents, including ID cards, passports, and driver's licenses, making it one of the most powerful ID scanners and document readers available.
+This `ID Card Recognition SDK` offers advanced recognition capabilities for various ID documents, including ID cards, passports, and driver's licenses, making it one of the most powerful ID scanners and document readers available.
 <br></br>
 
 ## Try our Sever SDK on our Playground
 [Faceplugin Playground](https://playground.faceplugin.com/)
 <br></br>
 
-<h2>Screenshots</h2>
+## Screenshots
 <img alt="" src="https://github.com/user-attachments/assets/94ff3050-a3b5-4896-b72e-5cb5a5396d5b" width=1600/>
 
 </div>
 
-<h2>List of our Products</h2>
-
+## List of our Products
 * **[FaceRecognition-LivenessDetection-Android](https://github.com/Faceplugin-ltd/FaceRecognition-Android)**
 * **[FaceRecognition-LivenessDetection-iOS](https://github.com/Faceplugin-ltd/FaceRecognition-iOS)**
 * **[FaceRecognition-LivenessDetection-Javascript](https://github.com/Faceplugin-ltd/FaceRecognition-LivenessDetection-Javascript)**
@@ -29,7 +28,7 @@ This ID Card Recognition SDK offers advanced recognition capabilities for variou
 * **[Liveness Detection SDK](https://github.com/Faceplugin-ltd/Face-Liveness-Detection-SDK)**
 * **[ID Card Recognition](https://github.com/Faceplugin-ltd/ID-Card-Recognition)**
 
-<h2>Contact</h2>
+## Contact
 <div align="left">
 <a target="_blank" href="mailto:info@faceplugin.com"><img src="https://img.shields.io/badge/email-info@faceplugin.com-blue.svg?logo=gmail " alt="faceplugin.com"></a>&emsp;
 <a target="_blank" href="https://t.me/faceplugin"><img src="https://img.shields.io/badge/telegram-@faceplugin-blue.svg?logo=telegram " alt="faceplugin.com"></a>&emsp;

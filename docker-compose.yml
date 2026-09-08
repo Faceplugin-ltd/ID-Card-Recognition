@@ -1,0 +1,22 @@
+services:
+  sdk:
+    container_name: faceplugin-document-reader
+    build: .
+    image: faceplugin/document-reader:local
+    platform: linux/amd64
+    privileged: true
+    # dcr.fpk extracts to /dev/shm (~600MB). Docker default shm is 64MB → SDK init fails.
+    shm_size: "2gb"
+    ports:
+      - "8082:8082"
+    environment:
+      PORT: "8082"
+      # Optional path or FP1. key. Empty ./license.txt is ignored until you paste a real key.
+      LICENSE: /root/docsdk/license.txt
+    volumes:
+      # Optional license file (paste FP1. key when you have one).
+      - ./license.txt:/root/docsdk/license.txt
+      # Linux hosts: keep this for a stable Docker machine code.
+      # Docker Desktop (macOS/Windows): remove the next line (no host /etc/machine-id).
+      - /etc/machine-id:/etc/machine-id:ro
+    restart: unless-stopped

@@ -1,0 +1,303 @@
+{
+  "info": {
+    "_postman_id": "faceplugin-documentreader-docker-0001",
+    "name": "FacePlugin DocumentReader",
+    "description": "FacePlugin DocumentReader API (Linux / Docker).\n\nbaseUrl defaults to port 8082.\nLicense: FP1. key via text/plain or JSON; check capabilities with GET /api/licenseStatus (Recognition / Liveness).\nDocument process defaults include Authenticity: normal for the Security tab.\nAll routes are under /api/* (no version segment in the path).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8082"
+    },
+    {
+      "key": "imageB64",
+      "value": ""
+    },
+    {
+      "key": "image2B64",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Shared",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/health"
+          }
+        },
+        {
+          "name": "Version",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/backend",
+            "description": "Product / sdk_version / backend (cpu)."
+          }
+        },
+        {
+          "name": "Machine code",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/machinecode"
+          }
+        },
+        {
+          "name": "License status",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/licenseStatus",
+            "description": "Returns licensed, levelName/label (e.g. Recognition + Liveness), recognition, authenticity flags."
+          }
+        },
+        {
+          "name": "Activate (FP1. text)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "FP1.PASTE_YOUR_LICENSE_KEY_HERE"
+            },
+            "url": "{{baseUrl}}/api/activate",
+            "description": "Preferred: paste the FP1. key from FacePlugin (same content as license.txt)."
+          }
+        },
+        {
+          "name": "Activate (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"license\": \"FP1.PASTE_YOUR_LICENSE_KEY_HERE\"\n}"
+            },
+            "url": "{{baseUrl}}/api/activate"
+          }
+        },
+        {
+          "name": "Activate (form-data)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "license",
+                  "type": "text",
+                  "value": "FP1.PASTE_YOUR_LICENSE_KEY_HERE"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/activate",
+            "description": "form-data license text, or a file part named license."
+          }
+        }
+      ]
+    },
+    {
+      "name": "DocumentReader",
+      "item": [
+        {
+          "name": "Document process (one image) (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"images\": [\n    { \"image\": \"{{imageB64}}\" }\n  ],\n  \"response\": {\n    \"OCR\": \"normal\",\n    \"MRZ\": \"normal\",\n    \"Barcode\": \"normal\",\n    \"ImageQuality\": \"normal\",\n    \"Authenticity\": \"normal\",\n    \"RFID\": \"none\"\n  }\n}"
+            },
+            "url": "{{baseUrl}}/api/documentProcess",
+            "description": "Single page (front). Authenticity normal enables Security results when the license includes Liveness. Set collection variable imageB64 to a base64 JPEG/PNG."
+          }
+        },
+        {
+          "name": "Document process (form-data)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": "/path/to/front.jpg"
+                },
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": "/path/to/back.jpg"
+                },
+                {
+                  "key": "options",
+                  "type": "text",
+                  "value": "{\"response\":{\"OCR\":\"normal\",\"MRZ\":\"normal\",\"Barcode\":\"normal\",\"ImageQuality\":\"normal\",\"Authenticity\":\"normal\"}}"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/documentProcess",
+            "description": "multipart/form-data file upload; same path as JSON."
+          }
+        },
+        {
+          "name": "Document process (two images) (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"images\": [\n    { \"image\": \"{{imageB64}}\", \"page_idx\": 0 },\n    { \"image\": \"{{image2B64}}\", \"page_idx\": 1 }\n  ],\n  \"response\": {\n    \"OCR\": \"normal\",\n    \"MRZ\": \"normal\",\n    \"Barcode\": \"normal\",\n    \"ImageQuality\": \"normal\",\n    \"Authenticity\": \"normal\",\n    \"RFID\": \"none\"\n  }\n}"
+            },
+            "url": "{{baseUrl}}/api/documentProcess",
+            "description": "Front + back. Set imageB64 (page 0) and image2B64 (page 1) to base64 JPEG/PNG."
+          }
+        },
+        {
+          "name": "Document recognition (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"images\": [\n    { \"image\": \"{{imageB64}}\", \"page_idx\": 0 },\n    { \"image\": \"{{image2B64}}\", \"page_idx\": 1 }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/documentRecognition",
+            "description": "OCR / MRZ / barcode only. Authenticity is always off — caller response flags are ignored."
+          }
+        },
+        {
+          "name": "Document recognition (form-data)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": "/path/to/front.jpg"
+                },
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": "/path/to/back.jpg"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/documentRecognition",
+            "description": "multipart/form-data; OCR / MRZ / barcode only."
+          }
+        },
+        {
+          "name": "Document liveness (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"images\": [\n    { \"image\": \"{{imageB64}}\", \"page_idx\": 0 },\n    { \"image\": \"{{image2B64}}\", \"page_idx\": 1 }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/documentLiveness",
+            "description": "Authenticity / security only. OCR / MRZ / barcode are always off — caller response flags are ignored."
+          }
+        },
+        {
+          "name": "Document liveness (form-data)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": "/path/to/front.jpg"
+                },
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": "/path/to/back.jpg"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/documentLiveness",
+            "description": "multipart/form-data; authenticity / security only."
+          }
+        },
+        {
+          "name": "General process (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"{{imageB64}}\",\n  \"options\": {}\n}"
+            },
+            "url": "{{baseUrl}}/api/generalProcess"
+          }
+        },
+        {
+          "name": "General process (form-data)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/path/to/image.jpg"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/generalProcess",
+            "description": "multipart/form-data file upload; same path as JSON."
+          }
+        }
+      ]
+    }
+  ]
+}
